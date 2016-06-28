@@ -1,0 +1,44 @@
+apply plugin: 'java'
+apply plugin: 'spring-boot'
+
+buildscript {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.3.5.RELEASE")
+    }
+}
+
+sourceCompatibility = '1.8'
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+if (!hasProperty('mainClass')) {
+    ext.mainClass = 'com.naveed.spring.demo.Main'
+}
+
+configurations {
+    provided
+}
+
+sourceSets {
+    main { compileClasspath += configurations.provided }
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven { url "https://repository.jboss.org/nexus/content/repositories/releases" }
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-data-jpa:1.3.5.RELEASE")
+    compile("com.h2database:h2:1.4.191")
+    //Slf4j and Logback
+    compile "org.slf4j:slf4j-api:1.7.10",
+        "ch.qos.logback:logback-classic:1.1.7",
+    "ch.qos.logback:logback-core:1.1.7"
+    provided "org.projectlombok:lombok:1.16.2"
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
